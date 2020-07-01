@@ -1,4 +1,4 @@
-#mingrep
+# mingrep
 
 This is a mini grep version built in rust.
 
