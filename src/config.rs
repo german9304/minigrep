@@ -18,13 +18,11 @@ pub struct Config {
 impl Config {
 
     pub fn new(mut args: std::env::Args) -> Result<Config, String> {
-
         if args.len() < 2 {
             return Err(String::from("please provide more arguments"));
         }
         // iterator
         args.next();
-
         let query = if let Some(arg) = args.next() {
             arg
         } else {
@@ -36,7 +34,6 @@ impl Config {
         } else {
               return Err(String::from("Please provide query"))
         };
-        
         Ok(Config {
             query, 
             filename
