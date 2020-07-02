@@ -1,19 +1,15 @@
 use std::env;
 use std::io;
-
+use std::process;
+use myminigrep::config::Config;
 
 fn main() {
 
-    let file_name: Vec<String> = env::args().collect();
+    let config = Config::new(env::args()).unwrap_or_else(|err| {
+        println!("{}", err);
+        process::exit(1);
+    });
 
-    let file_path_result = myminigrep::file_path(&file_name[1]);
-
-    match file_path_result {
-        Ok(result) =>  {
-            if let Some(path) = result {
-                println!("current path: {}", path)
-            }
-        },
-        Err(err) => println!("{}", err),
-    }
+    // pass by reference, so run does not own config struct
+    myminigrep::run(&config);
 }

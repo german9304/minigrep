@@ -1,3 +1,5 @@
+use std::env;
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -6,11 +8,6 @@ mod tests {
     fn new_config() {
         let query = String::from("test");
         let filename = String::from("water");
-
-        let config = Config::new(query, filename);
-
-        assert_eq!(config.query().as_str(), "test");
-        assert_eq!(config.filename().as_str(), "water");
     }
 }
 
@@ -22,19 +19,37 @@ pub struct Config {
 
 impl Config {
 
-    fn new(query: String, filename: String) -> Config {
+    pub fn new(mut args: std::env::Args) -> Result<Config, String> {
 
-        Config {
+        if args.len() < 2 {
+            return Err(String::from("please provide more arguments"));
+        }
+        // iterator
+        args.next();
+
+        let query = if let Some(arg) = args.next() {
+            arg
+        } else {
+              return Err(String::from("Please provide query"))
+        };
+
+        let filename = if let Some(arg) = args.next() {
+            arg
+        } else {
+              return Err(String::from("Please provide query"))
+        };
+        
+        Ok(Config {
             query, 
             filename
-        }
+        })
     }
 
-    fn query(&self) -> &String {
+    pub fn query(&self) -> &String {
         &self.query
     }
 
-    fn filename(&self) -> &String {
+    pub fn filename(&self) -> &String {
         &self.filename
     }
 }

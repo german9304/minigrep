@@ -1,9 +1,7 @@
-mod config;
+pub mod config;
 
 use std::io;
 use std::env;
-
-
 
 pub fn file_path(file_name: &String) -> Result<Option<String>, io::Error> {
 
@@ -16,4 +14,13 @@ pub fn file_path(file_name: &String) -> Result<Option<String>, io::Error> {
     }
 
     Ok(None)
+}
+
+
+pub fn run(conf: &config::Config) {
+
+    let query = conf.query();
+    let name = conf.filename();
+
+    println!("query: {}, name: {}", query, name);
 }
