@@ -1,5 +1,3 @@
-use std::env;
-
 #[cfg(test)]
 mod tests {
     use super::*;
