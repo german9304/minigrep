@@ -13,13 +13,16 @@ mod tests {
     #[test]
     fn search_word() {
         let query = "test";
-        let text = "
+        let contents = "
         one 
         two
         three
-        test";
+test";
 
-        assert!(1 == 1);
+        assert_eq!(
+            vec!["test"],
+            search(&query.to_string(), &contents.to_string())
+        )
     }
 }
 
@@ -32,18 +35,28 @@ pub fn file_path(file_name: &String) -> Result<Option<String>, io::Error> {
     Ok(None)
 }
 
+pub fn search<'a>(query: &String, contents: &'a String) -> Vec<&'a str>{
+    let mut results = Vec::new();
+
+    for content in contents.lines() {
+        if content.contains(query) {
+            results.push(content);
+        }
+    }
+    results
+}
+
 
 pub fn run(conf: &config::Config) -> Result<(), Box<dyn Error>> {
     let query = conf.query();
     let name = conf.filename();
-    match file_path(name) {
-        Ok(dir) =>  {
-            if let Some(dir_path) = dir {
-            let contents = fs::read_to_string(&dir_path)?;
-            println!("{}", contents);
-            }
-        }
-        Err(err) => println!(" error here {}", err),
+    let dir_name = file_path(name)?
+        .unwrap_or_else(|| panic!("error in directory"));
+    let contents = fs::read_to_string(&dir_name)?;
+    let results = search(query, &contents);
+
+    for result in results {
+        println!("{}", result);
     }
     Ok(())
 }
