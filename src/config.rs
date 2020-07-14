@@ -1,19 +1,14 @@
 #[cfg(test)]
 mod tests {
-    use super::*;
-
+    //use super::*;
     #[test]
-    fn new_config() {
-        let query = String::from("test");
-        let filename = String::from("water");
-    }
+    fn new_config() {}
 }
 
 pub struct Config {
     query: String,
     filename: String,
 }
-
 
 impl Config {
 
